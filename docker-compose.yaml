@@ -1,9 +1,12 @@
+version: "3.8"
+
 services:
   api:
     image: atendai/evolution-api:latest
     restart: always
     env_file:
       - .env
+    working_dir: /evolution
     volumes:
       - evolution_instances:/evolution/instances
     expose:
