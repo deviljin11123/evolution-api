@@ -15,7 +15,7 @@ services:
       - sh
       - -lc
       - >
-        npm run db:deploy &&
+        DATABASE_URL="$DIRECT_DATABASE_URL" npm run db:deploy || echo "migrate skipped";
         (npm run start:prod || npm run start || node dist/main.js)
     labels:
       - traefik.enable=true
