@@ -2,19 +2,14 @@ version: "3.8"
 
 services:
   api:
-    image: atendai/evolution-api:latest
+    image: evoapicloud/evolution-api:latest  # official image
     restart: always
     env_file:
       - .env
-    working_dir: /evolution
     volumes:
       - evolution_instances:/evolution/instances
     expose:
       - "8080"
-    command:
-      - sh
-      - -lc
-      - "npm run start:prod || npm run start || node dist/main.js"
     labels:
       - traefik.enable=true
       - traefik.http.routers.evoapi.rule=Host(`evo1api.ezcrm.top`)
