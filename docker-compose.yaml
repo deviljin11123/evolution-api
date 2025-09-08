@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   api:
     image: atendai/evolution-api:latest
@@ -10,18 +8,20 @@ services:
       - evolution_instances:/evolution/instances
     expose:
       - "8080"
+    command:
+      - sh
+      - -lc
+      - >
+        npm run db:deploy &&
+        (npm run start:prod || npm run start || node dist/main.js)
     labels:
       - traefik.enable=true
-      # Router for HTTP/HTTPS by hostname
       - traefik.http.routers.evoapi.rule=Host(`evo1api.ezcrm.top`)
       - traefik.http.routers.evoapi.entrypoints=web,websecure
       - traefik.http.routers.evoapi.tls=true
-      # Tell Traefik which internal port to use
       - traefik.http.services.evoapi.loadbalancer.server.port=8080
-      # Tell Traefik which Docker network to use to reach the container
-      - traefik.docker.network=$coolify
+      - traefik.docker.network=coolify
     networks:
-      - default
       - coolify
 
 networks:
